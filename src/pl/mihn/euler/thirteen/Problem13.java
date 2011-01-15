@@ -56,37 +56,45 @@ public class Problem13 {
 			"72107838435069186155435662884062257473692284509516", "20849603980134001723930671666823555245252804609722",
 			"53503534226472524250874054075591789781264330331690" };
 
+	/**
+	 * basic idea is to do manual sum up, like on paper sheet.
+	 * we start from end, add all numbers in one column
+	 * we get last digit from sum and put it at begging of the list 
+	 * and then remove it from sum, and save that for next iteration
+	 * we move one column to the left  
+	 */
 	public static void main(String[] args) {
-		int i = array[0].length() - 1;
-		boolean test = true;
-		LinkedList<String> llist = new LinkedList<String>();
-		int nextAdd = 0;
-		while (test) {
-			int sum = 0 + nextAdd;
-			if (i >= 0) {
-				for (String str : array) {
+		int i = array[0].length() - 1; // index of last element in every string
+		boolean next = true; // condition to get loop goin
+		LinkedList<String> llist = new LinkedList<String>(); // list to hold stuff
+		int nextAdd = 0; // sum saved for next iteration, zero at start
+		while (next) {
+			int sum = 0 + nextAdd; // add sum from last iteration
+			if (i >= 0) { // 
+				for (String str : array) { // sum all digits from column i
 					sum += Integer.parseInt(str.substring(i, i + 1));
 				}
 			}
-			String sumStr = String.valueOf(sum);
-			if (i == 0) {
-				if (sum > 0) {
+			String sumStr = String.valueOf(sum); // turn to string
+			if (i == 0) { // if we're on first column, eg. no more to sum up
+				if (sum > 0) { // if current sum of elements is greater then 0, we're adding each digit from sum to beggning of the list
 					for (int j = sumStr.length() - 1; j >= 0; j--) {
 						String tmp = sumStr.substring(j, j + 1);
 						llist.addFirst(tmp);
 					}
-					test = false;
+					// exit loop 
 				}
-			} else {
-				if (sumStr.length() > 1) {
+				next = false;
+			} else { // if we're before 1st column
+				if (sumStr.length() > 1) { // if sum has lenght, save it without last element for next iteration
 					nextAdd = Integer.parseInt(sumStr.substring(0, sumStr.length() - 1));
 				}
-				llist.addFirst(sumStr.substring(sumStr.length() - 1));
+				llist.addFirst(sumStr.substring(sumStr.length() - 1)); //add last element from sum to beggning of the list
 			}
-			--i;
+			--i; // move 1 column left
 		}
 		Iterator<String> it = llist.iterator();
-		for (i = 0; i < 10; i++) {
+		for (i = 0; i < 10; i++) { //print out 10 first elements from the list
 			System.out.print(it.next());
 		}
 	}
